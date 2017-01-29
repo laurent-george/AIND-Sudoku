@@ -47,6 +47,7 @@ class SudokuSquare:
         if number != None:
             number = str(number)
             self.color = (2, 204, 186)
+            self.color = (120, 40, 80)
         else:
             number = ""
             self.color = (255, 255, 255)
@@ -56,12 +57,12 @@ class SudokuSquare:
         self.textpos = self.text.get_rect()
         self.textpos = self.textpos.move(offsetX + 17, offsetY + 4)
 
-        # self.collide = pygame.Surface((25, 22))
-        # self.collide = self.collide.convert()
+        self.collide = pygame.Surface((25, 22))
+        self.collide = self.collide.convert()
         # AAfilledRoundedRect(pygame.display.get_surface(), (xLoc, yLoc, 25, 22), (255, 255, 255))
-        # self.collide.fill((2, 204, 186))
-        # self.collideRect = self.collide.get_rect()
-        # self.collideRect = self.collideRect.move(offsetX + 1, offsetY + 1)
+        self.collide.fill((2, 204, 186))
+        self.collideRect = self.collide.get_rect()
+        self.collideRect = self.collideRect.move(offsetX + 1, offsetY + 1)
         # The rect around the text is 11 x 28
 
         self.edit = edit
@@ -74,7 +75,7 @@ class SudokuSquare:
         screen = pygame.display.get_surface()
         AAfilledRoundedRect(screen, (self.offsetX, self.offsetY, 45, 40), self.color)
 
-        # screen.blit(self.collide, self.collideRect)
+        #screen.blit(self.collide, self.collideRect)
         screen.blit(self.text, self.textpos)
 
 

@@ -47,12 +47,13 @@ def play(values_list):
                 theSquares.append(SudokuSquare.SudokuSquare(number, startX, startY, editable, x, y))
 
         screen.blit(background_image, (0, 0))
-        for num in theSquares:
+        for (i, num) in enumerate(theSquares):
             num.draw()
+
 
         pygame.display.flip()
         pygame.display.update()
-        clock.tick(5)
+        clock.tick(100)
 
     # leave game showing until closed by user
     while True:

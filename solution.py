@@ -34,6 +34,7 @@ def assign_value(values, box, value):
         assignments.append(values.copy())
     return values
 
+
 def naked_twins(values):
     """Eliminate values using the naked twins strategy.
     Args:
@@ -88,6 +89,7 @@ def grid_values(grid):
             res[key] = val
     return res
 
+
 def display(values):
     """
     Display the values as a 2-D grid.
@@ -101,6 +103,7 @@ def display(values):
                       for c in cols))
         if r in 'CF': print(line)
     print
+
 
 def eliminate(values):
     """
@@ -118,7 +121,8 @@ def eliminate(values):
     for key, digit in values.items():
         if len(digit) == 1:
             for peer in peers[key]:
-                values[peer] = values[peer].replace(digit, '')  # we remove the digit
+                new_val = values[peer].replace(digit, '')  # we remove the digit
+                assign_value(values, peer, new_val)
     return values
 
 
@@ -135,15 +139,14 @@ def only_choice(values):
     Returns:
         Sudoku in dictionary form after filling in only choices.
     """
-    # TODO: a reecrire
     new_values = values.copy()  # note: do not modify original values
     for unit in unitlist:
         for digit in '123456789':
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
-                new_values[dplaces[0]] = digit
+                #new_values[dplaces[0]] = digit
+                assign_value(new_values, dplaces[0], digit)
     return new_values
-
 
 
 def reduce_puzzle(values):
@@ -207,13 +210,33 @@ def search(values):
     possibilities = values[position]
 
     for possibility in possibilities:
-        new_sudoku = values.copy() ## Not optimized at all
-        new_sudoku[position] = possibility
+        new_sudoku = values.copy()
+        assign_value(new_sudoku, position, possibility)
         new_sudoku = search(new_sudoku)
         if new_sudoku != False:
             return new_sudoku
 
     return False
+
+
+def search_not_working(values):
+    "Using depth-first search and propagation, try all possible values."
+    # First, reduce the puzzle using the previous function
+    values = reduce_puzzle(values)
+    if values is False:
+        return False ## Failed earlier
+    if all(len(values[s]) == 1 for s in boxes):
+        return values ## Solved!
+    # Choose one of the unfilled squares with the fewest possibilities
+    n,s = min((len(values[s]), s) for s in boxes if len(values[s]) > 1)
+    # Now use recurrence to solve each one of the resulting sudokus, and
+    for value in values[s]:
+        new_sudoku = values.copy()
+        new_sudoku[s] = value
+        attempt = search(new_sudoku)
+        if attempt:
+            return attempt
+
 
 def solve(grid):
     """
@@ -227,9 +250,13 @@ def solve(grid):
     values = grid_values(grid)
     return search(values)
 
+
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
-    display(solve(diag_sudoku_grid))
+
+    # an hard grid (need to deactivate diagonal constraint in order to get a solution)
+    #hard_grid = '4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......'
+    res = solve(diag_sudoku_grid)
 
     try:
         from visualize import visualize_assignments
