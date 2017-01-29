@@ -2,12 +2,17 @@
 ## Introductory Project: Diagonal Sudoku Solver
 
 # Question 1 (Naked Twins)
-Q: How do we use constraint propagation to solve the naked twins problem?  
-A: *Student should provide answer here*
+Q: How do we use constraint propagation to solve the naked twins problem?
+
+A: We remove a digit from the possibilities of a box if there is already a twin (that include that digit) in the same unit.
+A twin is defined as two numbers that can only go in the same two box and no others in that unit.
 
 # Question 2 (Diagonal Sudoku)
-Q: How do we use constraint propagation to solve the diagonal sudoku problem?  
-A: *Student should provide answer here*
+Q: How do we use constraint propagation to solve the diagonal sudoku problem?
+
+A: When checking if a number could fit in a box we consider the default sudoku constraint and also check that the
+diagonal constraint is not violated (i.e the numbers 1 to 9 should all appear exactly once on each diagonal).
+For doing that we simply add the two diagonals into the units set, and reuse previous code.
 
 ### Install
 
